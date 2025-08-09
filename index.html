@@ -58,13 +58,12 @@
     const terminalOutput = document.getElementById('terminal-output');
     const leftPanel = document.getElementById('left-panel');
 
+    // Skills list for the word cloud
     const skills = [
       "Python", "C", "MySQL", "HTML", "CSS", "JavaScript",
-      "React.js", "Windows", "Linux", "AI/ML", "Blockchain",
-      "Node.js", "Express.js", "REST API", "GraphQL", "Docker",
-      "Kubernetes", "Nginx", "Apache Kafka", "RabbitMQ",
-      "Postman", "Git", "CI/CD", "MongoDB", "PostgreSQL",
-      "Redis", "Firebase", "Jenkins", "Spring Boot"
+      "React.js", "Linux", "Machine Learning", "Blockchain",
+      "Node.js", "Express.js",
+      "Postman", "Git", "MongoDB",
     ];
 
     // Show welcome message on load
@@ -109,16 +108,127 @@
       addOutput("  contact    - Show my contact info");
     }
 
-    function showSkills() {
-      leftPanel.innerHTML = `<canvas id="skills-cloud" class="w-full h-full fade-in"></canvas>`;
-      WordCloud(document.getElementById('skills-cloud'), {
-        list: skills.map(skill => [skill, Math.random() * 30 + 15]),
-        gridSize: 8,
-        weightFactor: 3,
-        color: 'random-light',
-        backgroundColor: '#1f2937'
-      });
+function showSkills() {
+  leftPanel.innerHTML = `<svg id="skills-cloud" class="w-full h-full fade-in bg-gray-800"></svg>`;
+  const svg = document.getElementById("skills-cloud");
+  const width = leftPanel.clientWidth;
+  const height = leftPanel.clientHeight;
+
+  const grid = {};
+  const wordsPlaced = [];
+  const cellSize = 26; 
+  const fontSize = 20; 
+
+  const colors = [
+    "#00ff7f", "#ff6f61", "#ffd700", "#00bfff", "#ff69b4",
+    "#ff8c00", "#9370db", "#3cb371", "#ff1493", "#1e90ff",
+    "#adff2f", "#ff6347", "#40e0d0", "#daa520", "#7b68ee"
+  ];
+
+  function placeWord(word, x, y, horizontal, color) {
+    wordsPlaced.push({ word, x, y, horizontal, color });
+    for (let i = 0; i < word.length; i++) {
+      const gx = horizontal ? x + i : x;
+      const gy = horizontal ? y : y + i;
+      grid[`${gx},${gy}`] = word[i];
     }
+  }
+
+  function canPlace(word, x, y, horizontal) {
+    for (let i = 0; i < word.length; i++) {
+      const gx = horizontal ? x + i : x;
+      const gy = horizontal ? y : y + i;
+      const existing = grid[`${gx},${gy}`];
+      if (existing && existing !== word[i]) return false;
+    }
+    return true;
+  }
+
+  // First word
+  placeWord(skills[0].toUpperCase(), 0, 0, true, colors[0]);
+
+  // Place others
+  for (let i = 1; i < skills.length; i++) {
+    const word = skills[i].toUpperCase();
+    const color = colors[i % colors.length];
+    let placed = false;
+
+    for (const key in grid) {
+      const [gx, gy] = key.split(",").map(Number);
+      const letter = grid[key];
+
+      for (let j = 0; j < word.length; j++) {
+        if (word[j] === letter) {
+          if (canPlace(word, gx, gy - j, false)) {
+            placeWord(word, gx, gy - j, false, color);
+            placed = true;
+            break;
+          }
+          if (canPlace(word, gx - j, gy, true)) {
+            placeWord(word, gx - j, gy, true, color);
+            placed = true;
+            break;
+          }
+        }
+      }
+      if (placed) break;
+    }
+  }
+
+  // Bounds
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const key in grid) {
+    const [gx, gy] = key.split(",").map(Number);
+    minX = Math.min(minX, gx);
+    minY = Math.min(minY, gy);
+    maxX = Math.max(maxX, gx);
+    maxY = Math.max(maxY, gy);
+  }
+
+  const totalWidth = (maxX - minX + 1) * cellSize;
+  const totalHeight = (maxY - minY + 1) * cellSize;
+
+  const offsetX = width / 2 - totalWidth / 2 - minX * cellSize;
+  const offsetY = height / 2 - totalHeight / 2 - minY * cellSize;
+
+  // Draw word highlights first
+  for (const w of wordsPlaced) {
+    const { word, x, y, horizontal, color } = w;
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("fill", color);
+    rect.setAttribute("rx", "4");
+    rect.setAttribute("ry", "4");
+
+    if (horizontal) {
+      rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
+      rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
+      rect.setAttribute("width", word.length * cellSize);
+      rect.setAttribute("height", cellSize);
+    } else {
+      rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
+      rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
+      rect.setAttribute("width", cellSize);
+      rect.setAttribute("height", word.length * cellSize);
+    }
+    svg.appendChild(rect);
+  }
+
+  // Draw letters on top
+  for (const key in grid) {
+    const [gx, gy] = key.split(",").map(Number);
+    const letter = grid[key];
+    const textElem = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    textElem.textContent = letter;
+    textElem.setAttribute("x", gx * cellSize + offsetX);
+    textElem.setAttribute("y", gy * cellSize + offsetY);
+    textElem.setAttribute("font-size", fontSize);
+    textElem.setAttribute("fill", "#000"); // text black for contrast
+    textElem.setAttribute("font-family", "monospace");
+    textElem.setAttribute("text-anchor", "middle");
+    textElem.setAttribute("dominant-baseline", "middle");
+    svg.appendChild(textElem);
+  }
+}
 
     function showAbout() {
       leftPanel.innerHTML = `
