@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anirudh Kotla | Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.1.2/wordcloud2.min.js"></script>
   <style>
     .fade-in { animation: fadeIn 0.8s ease-in-out; }
     @keyframes fadeIn {
@@ -17,12 +16,11 @@
 <body class="bg-gray-900 text-green-400 font-mono">
   <div class="flex h-screen">
     
-    <!-- Left Side: Profile Card -->
+    <!-- Left Side -->
     <div id="left-panel" class="w-1/2 flex items-center justify-center bg-gray-800 p-6">
+      <!-- Profile Card -->
       <div id="profile-card" class="bg-gray-700 rounded-lg p-6 text-center shadow-lg max-w-lg flex items-center space-x-4">
-        <!-- Profile Image -->
         <img src="pic.jpg" alt="Profile" class="w-32 h-32 rounded-full border-2 border-green-400">
-        <!-- Profile Info -->
         <div class="text-left">
           <h1 class="text-2xl font-bold">Anirudh Kotla</h1>
           <p class="text-green-300">B.E in Computer Science Engineering<br>(Expected 2027)</p>
@@ -39,7 +37,7 @@
       </div>
     </div>
 
-    <!-- Right Side: Terminal -->
+    <!-- Right Side Terminal -->
     <div class="w-1/2 bg-black p-6 flex flex-col">
       <div id="terminal-output" class="flex-1 overflow-y-auto"></div>
       <div class="flex">
@@ -58,15 +56,12 @@
     const terminalOutput = document.getElementById('terminal-output');
     const leftPanel = document.getElementById('left-panel');
 
-    // Skills list for the word cloud
     const skills = [
       "Python", "C", "MySQL", "HTML", "CSS", "JavaScript",
       "React.js", "Linux", "Machine Learning", "Blockchain",
-      "Node.js", "Express.js",
-      "Postman", "Git", "MongoDB",
+      "Node.js", "Express.js", "Postman", "Git", "MongoDB",
     ];
 
-    // Show welcome message on load
     addOutput("Welcome to Anirudh's Portfolio Terminal");
     addOutput("Type 'help' to see available commands");
 
@@ -94,6 +89,7 @@
         case 'projects': showProjects(); break;
         case 'experience': showExperience(); break;
         case 'contact': showContact(); break;
+        case 'profile': showProfile(); break; // ✅ new profile command
         default: addOutput(`Command not recognized: ${cmd}`);
       }
     }
@@ -101,134 +97,148 @@
     function showHelp() {
       addOutput("Available commands:");
       addOutput("  help       - Show this help menu");
+      addOutput("  profile    - Show profile card");
       addOutput("  about      - About me");
-      addOutput("  skills     - Show skills word cloud");
+      addOutput("  skills     - Show skills crossword");
       addOutput("  projects   - Show my projects");
       addOutput("  experience - Show my experience");
       addOutput("  contact    - Show my contact info");
     }
 
-function showSkills() {
-  leftPanel.innerHTML = `<svg id="skills-cloud" class="w-full h-full fade-in bg-gray-800"></svg>`;
-  const svg = document.getElementById("skills-cloud");
-  const width = leftPanel.clientWidth;
-  const height = leftPanel.clientHeight;
-
-  const grid = {};
-  const wordsPlaced = [];
-  const cellSize = 26; 
-  const fontSize = 20; 
-
-  const colors = [
-    "#00ff7f", "#ff6f61", "#ffd700", "#00bfff", "#ff69b4",
-    "#ff8c00", "#9370db", "#3cb371", "#ff1493", "#1e90ff",
-    "#adff2f", "#ff6347", "#40e0d0", "#daa520", "#7b68ee"
-  ];
-
-  function placeWord(word, x, y, horizontal, color) {
-    wordsPlaced.push({ word, x, y, horizontal, color });
-    for (let i = 0; i < word.length; i++) {
-      const gx = horizontal ? x + i : x;
-      const gy = horizontal ? y : y + i;
-      grid[`${gx},${gy}`] = word[i];
+    function showProfile() {
+      leftPanel.innerHTML = `
+        <div id="profile-card" class="bg-gray-700 rounded-lg p-6 text-center shadow-lg max-w-lg flex items-center space-x-4">
+          <img src="pic.jpg" alt="Profile" class="w-32 h-32 rounded-full border-2 border-green-400">
+          <div class="text-left">
+            <h1 class="text-2xl font-bold">Anirudh Kotla</h1>
+            <p class="text-green-300">B.E in Computer Science Engineering<br>(Expected 2027)</p>
+            <div class="mt-2 space-y-1">
+              <a href="mailto:kotlaanirudh05@gmail.com" class="block hover:text-green-200">kotlaanirudh05@gmail.com</a>
+              <a href="https://github.com/ANIRUK007" target="_blank" class="block hover:text-green-200">GitHub: ANIRUK007</a>
+              <div class="flex items-center space-x-3">
+                <a href="https://www.linkedin.com/in/kotla-anirudh-a831a4245/" target="_blank" class="hover:text-green-200">LinkedIn</a>
+                <span class="text-green-500">|</span>
+                <a href="https://www.instagram.com/YOUR_INSTAGRAM_USERNAME" target="_blank" class="hover:text-green-200">Instagram</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     }
-  }
 
-  function canPlace(word, x, y, horizontal) {
-    for (let i = 0; i < word.length; i++) {
-      const gx = horizontal ? x + i : x;
-      const gy = horizontal ? y : y + i;
-      const existing = grid[`${gx},${gy}`];
-      if (existing && existing !== word[i]) return false;
-    }
-    return true;
-  }
+    function showSkills() {
+      leftPanel.innerHTML = `<svg id="skills-cloud" class="w-full h-full fade-in bg-gray-800"></svg>`;
+      const svg = document.getElementById("skills-cloud");
+      const width = leftPanel.clientWidth;
+      const height = leftPanel.clientHeight;
 
-  // First word
-  placeWord(skills[0].toUpperCase(), 0, 0, true, colors[0]);
+      const grid = {};
+      const wordsPlaced = [];
+      const cellSize = 26;
+      const fontSize = 20;
+      const colors = [
+        "#00ff7f", "#ff6f61", "#ffd700", "#00bfff", "#ff69b4",
+        "#ff8c00", "#9370db", "#3cb371", "#ff1493", "#1e90ff",
+        "#adff2f", "#ff6347", "#40e0d0", "#daa520", "#7b68ee"
+      ];
 
-  // Place others
-  for (let i = 1; i < skills.length; i++) {
-    const word = skills[i].toUpperCase();
-    const color = colors[i % colors.length];
-    let placed = false;
-
-    for (const key in grid) {
-      const [gx, gy] = key.split(",").map(Number);
-      const letter = grid[key];
-
-      for (let j = 0; j < word.length; j++) {
-        if (word[j] === letter) {
-          if (canPlace(word, gx, gy - j, false)) {
-            placeWord(word, gx, gy - j, false, color);
-            placed = true;
-            break;
-          }
-          if (canPlace(word, gx - j, gy, true)) {
-            placeWord(word, gx - j, gy, true, color);
-            placed = true;
-            break;
-          }
+      function placeWord(word, x, y, horizontal, color) {
+        wordsPlaced.push({ word, x, y, horizontal, color });
+        for (let i = 0; i < word.length; i++) {
+          const gx = horizontal ? x + i : x;
+          const gy = horizontal ? y : y + i;
+          grid[`${gx},${gy}`] = word[i];
         }
       }
-      if (placed) break;
+
+      function canPlace(word, x, y, horizontal) {
+        for (let i = 0; i < word.length; i++) {
+          const gx = horizontal ? x + i : x;
+          const gy = horizontal ? y : y + i;
+          const existing = grid[`${gx},${gy}`];
+          if (existing && existing !== word[i]) return false;
+        }
+        return true;
+      }
+
+      placeWord(skills[0].toUpperCase(), 0, 0, true, colors[0]);
+
+      for (let i = 1; i < skills.length; i++) {
+        const word = skills[i].toUpperCase();
+        const color = colors[i % colors.length];
+        let placed = false;
+
+        for (const key in grid) {
+          const [gx, gy] = key.split(",").map(Number);
+          const letter = grid[key];
+
+          for (let j = 0; j < word.length; j++) {
+            if (word[j] === letter) {
+              if (canPlace(word, gx, gy - j, false)) {
+                placeWord(word, gx, gy - j, false, color);
+                placed = true; break;
+              }
+              if (canPlace(word, gx - j, gy, true)) {
+                placeWord(word, gx - j, gy, true, color);
+                placed = true; break;
+              }
+            }
+          }
+          if (placed) break;
+        }
+      }
+
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (const key in grid) {
+        const [gx, gy] = key.split(",").map(Number);
+        minX = Math.min(minX, gx);
+        minY = Math.min(minY, gy);
+        maxX = Math.max(maxX, gx);
+        maxY = Math.max(maxY, gy);
+      }
+
+      const totalWidth = (maxX - minX + 1) * cellSize;
+      const totalHeight = (maxY - minY + 1) * cellSize;
+      const offsetX = width / 2 - totalWidth / 2 - minX * cellSize;
+      const offsetY = height / 2 - totalHeight / 2 - minY * cellSize;
+
+      // Draw word highlights
+      for (const w of wordsPlaced) {
+        const { word, x, y, horizontal, color } = w;
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("fill", color);
+        rect.setAttribute("rx", "4");
+        rect.setAttribute("ry", "4");
+        if (horizontal) {
+          rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
+          rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
+          rect.setAttribute("width", word.length * cellSize);
+          rect.setAttribute("height", cellSize);
+        } else {
+          rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
+          rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
+          rect.setAttribute("width", cellSize);
+          rect.setAttribute("height", word.length * cellSize);
+        }
+        svg.appendChild(rect);
+      }
+
+      // Draw letters
+      for (const key in grid) {
+        const [gx, gy] = key.split(",").map(Number);
+        const letter = grid[key];
+        const textElem = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textElem.textContent = letter;
+        textElem.setAttribute("x", gx * cellSize + offsetX);
+        textElem.setAttribute("y", gy * cellSize + offsetY);
+        textElem.setAttribute("font-size", fontSize);
+        textElem.setAttribute("fill", "#000");
+        textElem.setAttribute("font-family", "monospace");
+        textElem.setAttribute("text-anchor", "middle");
+        textElem.setAttribute("dominant-baseline", "middle");
+        svg.appendChild(textElem);
+      }
     }
-  }
-
-  // Bounds
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const key in grid) {
-    const [gx, gy] = key.split(",").map(Number);
-    minX = Math.min(minX, gx);
-    minY = Math.min(minY, gy);
-    maxX = Math.max(maxX, gx);
-    maxY = Math.max(maxY, gy);
-  }
-
-  const totalWidth = (maxX - minX + 1) * cellSize;
-  const totalHeight = (maxY - minY + 1) * cellSize;
-
-  const offsetX = width / 2 - totalWidth / 2 - minX * cellSize;
-  const offsetY = height / 2 - totalHeight / 2 - minY * cellSize;
-
-  // Draw word highlights first
-  for (const w of wordsPlaced) {
-    const { word, x, y, horizontal, color } = w;
-    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    rect.setAttribute("fill", color);
-    rect.setAttribute("rx", "4");
-    rect.setAttribute("ry", "4");
-
-    if (horizontal) {
-      rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
-      rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
-      rect.setAttribute("width", word.length * cellSize);
-      rect.setAttribute("height", cellSize);
-    } else {
-      rect.setAttribute("x", x * cellSize + offsetX - cellSize / 2);
-      rect.setAttribute("y", y * cellSize + offsetY - cellSize / 2);
-      rect.setAttribute("width", cellSize);
-      rect.setAttribute("height", word.length * cellSize);
-    }
-    svg.appendChild(rect);
-  }
-
-  // Draw letters on top
-  for (const key in grid) {
-    const [gx, gy] = key.split(",").map(Number);
-    const letter = grid[key];
-    const textElem = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textElem.textContent = letter;
-    textElem.setAttribute("x", gx * cellSize + offsetX);
-    textElem.setAttribute("y", gy * cellSize + offsetY);
-    textElem.setAttribute("font-size", fontSize);
-    textElem.setAttribute("fill", "#000"); // text black for contrast
-    textElem.setAttribute("font-family", "monospace");
-    textElem.setAttribute("text-anchor", "middle");
-    textElem.setAttribute("dominant-baseline", "middle");
-    svg.appendChild(textElem);
-  }
-}
 
     function showAbout() {
       leftPanel.innerHTML = `
