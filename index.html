@@ -151,6 +151,34 @@
   }
 
   function showSkills() {
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+    
+    if (isMobile || isTablet) {
+      // Multi-column grid for mobile and tablet
+      const colors = [
+        "#00ff7f", "#ff6f61", "#ffd700", "#00bfff", "#ff69b4",
+        "#ff8c00", "#9370db", "#3cb371", "#ff1493", "#1e90ff",
+        "#adff2f", "#ff6347", "#40e0d0", "#daa520", "#7b68ee"
+      ];
+      
+      leftPanel.innerHTML = `
+        <div class="p-4 md:p-6 fade-in overflow-y-auto">
+          <h2 class="text-lg md:text-xl font-bold mb-4 text-green-400 text-center">Skills</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto">
+            ${skills.map((skill, i) => `
+              <div class="px-3 py-3 rounded-lg text-sm md:text-base font-semibold text-center" 
+                   style="background-color: ${colors[i % colors.length]}; color: #000;">
+                ${skill}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      return;
+    }
+    
+    // Crossword-style for desktop
     leftPanel.innerHTML = `<svg id="skills-cloud" class="w-full h-full fade-in bg-gray-800"></svg>`;
     const svg = document.getElementById("skills-cloud");
     const width = leftPanel.clientWidth;
@@ -158,9 +186,8 @@
 
     const grid = {};
     const wordsPlaced = [];
-    const isMobile = window.innerWidth < 768;
-    const cellSize = isMobile ? 18 : 26; 
-    const fontSize = isMobile ? 14 : 20; 
+    const cellSize = 26; 
+    const fontSize = 20; 
 
     const colors = [
       "#00ff7f", "#ff6f61", "#ffd700", "#00bfff", "#ff69b4",
@@ -288,7 +315,7 @@
             using a Discord bot and ML models to extract, tag, and semantically 
             organize conversations. Uses a federated architecture for contextual 
             query answering across messaging platforms.</p>
-            <a href="https://github.com/ANIRUK007/ConvoMap-RAG_Ver1.git" target="_blank" 
+            <a href="https://github.com/ANIRUK007" target="_blank" 
                class="inline-block mt-2 text-blue-400 hover:text-blue-300 underline">
               View on GitHub →
             </a>
