@@ -168,14 +168,24 @@
     }
 
     .blog-item:first-child { border-top: 1px solid var(--border); }
+    .blog-list > *:first-child .blog-item { border-top: 1px solid var(--border); }
 
-    .blog-soon {
+    .blog-post { border-bottom: 1px solid var(--border); }
+    .blog-post summary.blog-item { cursor: pointer; border-bottom: none; list-style: none; }
+    .blog-post summary.blog-item::-webkit-details-marker { display: none; }
+    .blog-post summary.blog-item::before { content: '+'; font-family: 'IBM Plex Mono', monospace; color: var(--light-muted); width: 10px; flex-shrink: 0; }
+    .blog-post[open] summary.blog-item::before { content: '–'; }
+
+    .blog-date {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px; color: var(--light-muted);
-      letter-spacing: 0.05em; white-space: nowrap;
-      background: var(--tag-bg); padding: 2px 8px; border-radius: 3px;
-      flex-shrink: 0;
+      letter-spacing: 0.05em; white-space: nowrap; flex-shrink: 0;
     }
+
+    .blog-post-body { padding: 0 0 22px 24px; font-size: 14px; color: var(--muted); line-height: 1.8; }
+    .blog-post-body p { margin-bottom: 14px; }
+    .blog-post-body p:last-child { margin-bottom: 0; }
+    .blog-post-body .blog-refs { font-size: 12px; color: var(--light-muted); line-height: 1.7; margin-top: 4px; }
 
     .blog-title-text { font-size: 14px; color: var(--muted); font-style: italic; }
 
@@ -332,28 +342,63 @@
       </div>
     </div>
 
+    <div class="pet-project">
+      <div class="pet-project-name">
+        NeuroBrain
+        <a href="https://github.com/ANIRUK007/NeuroBrain" target="_blank">link ↗</a>
+      </div>
+      <div class="pet-project-desc">
+        A multimodal idea-grading system that predicts brain-region activation from text, audio, and video input. An EEG bridge model trained on real engagement data maps NLP/audio/video features onto EEG-derived brain scores, which are then fused per modality into a virality grade with a Mistral AI-generated improvement summary.
+      </div>
+    </div>
+
   </section>
 
   <!-- BLOG -->
-  <section style="margin-bottom: 52px;">
+  <section id="blog-section" style="margin-bottom: 52px;">
     <div class="section-title">blog</div>
     <div class="blog-list">
-      <div class="blog-item">
-        <span class="blog-soon">soon to be written</span>
-        <span class="blog-title-text">On building multi-agent systems that don't fall apart</span>
-      </div>
-      <div class="blog-item">
-        <span class="blog-soon">soon to be written</span>
-        <span class="blog-title-text">What I learned from my research internship at IIT Tirupati</span>
-      </div>
-      <div class="blog-item">
-        <span class="blog-soon">soon to be written</span>
-        <span class="blog-title-text">A practical introduction to LLMs for undergraduates</span>
-      </div>
-      <div class="blog-item">
-        <span class="blog-soon">soon to be written</span>
-        <span class="blog-title-text">Why explainable AI matters more than ever</span>
-      </div>
+      <details class="blog-post">
+        <summary class="blog-item">
+          <span class="blog-date">2026 · 07</span>
+          <span class="blog-title-text" style="font-style: normal; color: var(--accent);">The Era of Ternary Computing</span>
+        </summary>
+        <div class="blog-post-body">
+          <p>The landscape of AI, dominated by Transformer based models like OpenAI's GPT series and Google's Gemma, has redefined expectations for machine reasoning. However, a significant barrier persists: the sheer computational cost and memory footprint of these State of the Art (SOTA) models. Running a 7B parameter model typically requires a high end GPU with substantial VRAM, as weights are traditionally stored in FP16 (16 bit) format.</p>
+          <p>This memory bottleneck has led to a paradigm shift. While distillation and standard quantization (like 4 bit or 8 bit) offer some relief, they often trade off too much reasoning capability or still require expensive hardware. To address this, research into BitNet has introduced a "ternary" approach that fundamentally re-invents weight representation, focusing specifically on the 1.58 bit standard.</p>
+          <p><strong>The 1.58 bit Innovation: Beyond Binary</strong><br>
+          The core innovation of BitNet b1.58 is the transition from high precision floating points to a ternary system. Unlike the original 1 bit models that used only 1 and -1, the 1.58 bit model introduces a third state: 0. This addition of "zero" is transformative for two reasons:</p>
+          <p>• <strong>Model Sparsity:</strong> It allows the model to effectively "turn off" specific connections between neurons, improving performance while maintaining a tiny footprint.<br>
+          • <strong>Computational Efficiency:</strong> By using the values {-1, 0, 1}, the model replaces complex floating point matrix multiplications with simple integer additions and subtractions. This reduces energy consumption by approximately 12 to 20 times compared to standard models.</p>
+          <p><strong>Performance and Scaling Laws</strong><br>
+          The efficiency of 1.58 bit models is not just theoretical; it scales more effectively than traditional architectures. When comparing BitNet b1.58 to a standard Llama architecture: at 3B parameters, BitNet matches or even outperforms full precision models across various benchmarks. At 70B parameters, the memory savings become even more dramatic — a 70B BitNet model requires over 7 times less memory than a standard Llama 70B. Generation speeds are significantly higher too, with reports of 1.58 bit models being nearly 3 times faster at the 3B scale.</p>
+          <p><strong>Sustainable and Local AI</strong><br>
+          For those looking to build open source tools or research AI locally, the implications are profound. A 70B parameter 1.58 bit model can actually be more efficient in terms of memory usage and energy consumption than a standard 13B parameter model in full precision. Recent models trained on trillions of tokens demonstrate that these architectures can be trained at a fraction of the cost — roughly $1,300 for a 2B parameter run compared to an estimated $26,000 for standard precision. This paves the way for a future where high reasoning AI isn't confined to massive data centers but is accessible on consumer grade hardware, enabling a new era of sustainable and accessible AI development.</p>
+        </div>
+      </details>
+
+      <details class="blog-post">
+        <summary class="blog-item">
+          <span class="blog-date">2026 · 07</span>
+          <span class="blog-title-text" style="font-style: normal; color: var(--accent);">Cognitive Offloading in the Age of Generative AI</span>
+        </summary>
+        <div class="blog-post-body">
+          <p>Human beings have long been distinguished not by physical strength, but by cognition: the capacity to remember, imagine, reason, and transform experience into knowledge. Through cognition, humans developed language, mathematics, science, and technology. Ironically, these very achievements have now produced tools capable of performing many cognitive tasks for us. Generative artificial intelligence systems such as ChatGPT, Claude, and Gemini can write essays, summarize articles, generate code, and plan activities. As these tools move into everyday life, a central question emerges: are they extending the human mind, or gradually displacing it?</p>
+          <p>At the heart of this question lies the concept of cognitive offloading — the use of external resources to reduce the mental effort required to perform a task. Writing a shopping list instead of memorizing it, using a calculator rather than performing mental arithmetic, or relying on GPS instead of forming spatial maps are all examples of offloading. These practices are not new. What is new is that generative AI does not merely store or retrieve information — it actively produces language, structure, and apparent reasoning.</p>
+          <p>Recent researchers investigating short-term memory have shown that cognitive offloading significantly improves immediate task performance, especially as tasks become more demanding. In controlled experiments, participants performed far better when tools were available, particularly when the amount of information exceeded normal working-memory limits. Crucially, the researchers also identified a psychological moderator: trust toward tools. Participants who trusted a tool more were more likely to rely on it and gained greater performance benefits. Unlike notebooks or calculators, GenAI systems present themselves conversationally, fluently, and confidently — a human-like interaction style that can rapidly cultivate trust, and with it, a greater likelihood of offloading not only memory, but composition, planning, and problem-solving to machines.</p>
+          <p>Such delegation represents a deeper transfer of cognitive function. Historically, tools externalized memory and computation. Generative AI externalizes parts of thinking itself. Drafting essays, generating ideas, or summarizing arguments were once exercises through which students clarified and consolidated understanding. When these steps are bypassed, the human role subtly shifts from thinker to editor, from constructor of meaning to consumer of output.</p>
+          <p>Understanding how GenAI operates clarifies both its power and its limits. These systems are trained on massive datasets and learn statistical relationships between elements of language. When a user enters a prompt, the model predicts which sequences of words are most likely to follow. It does not possess awareness, intention, or understanding — it does not know whether a statement is true, only whether it is linguistically probable. This design allows remarkable fluency, but it also explains why generative models can confidently produce false information, fabricated references, or logically inconsistent explanations. Here again, trust becomes pivotal: misplaced trust can lead users to accept incorrect outputs without verification, and the system's polished language may mask its lack of grounding, increasing the risk of automation bias, where human judgment is overridden by machine output.</p>
+          <p>The broader concern is not simply that AI makes mistakes, but that sustained reliance may reshape cognitive habits. Cognitive effort is not only a cost — it is also the mechanism through which skills develop. Memory strengthens through retrieval, reasoning improves through struggle, and understanding deepens through construction. When generative systems perform these operations externally, the brain may engage less frequently in the very processes that sustain cognitive capacity. This shift can be described as a form of brain dislocation: the relocation of mental work from internal neural activity to external computational systems. Cognitive offloading boosts immediate performance, yet extensive cognitive science literature shows it can impair later independent recall — suggesting a future in which people perform tasks faster, yet potentially with reduced internalization of knowledge.</p>
+          <p>None of this implies that generative tools should be rejected. On the contrary, cognitive offloading has always been a driver of human progress — writing enabled civilization, and calculators enabled modern science. The issue is not whether we offload cognition, but which parts, how often, and with what awareness. Tool use is not merely technical; it is psychological. Trust shapes reliance, and reliance reshapes cognition. In the age of generative AI, the challenge is to cultivate a relationship with technology that preserves active thinking. When AI is used to support reflection rather than replace it, to challenge reasoning rather than shortcut it, it can serve as a genuine cognitive partner. If used uncritically, however, it risks becoming a silent architect of cognitive decline. The future of intelligence may not be defined by what machines can do, but by what humans choose to continue doing for themselves.</p>
+          <p class="blog-refs">
+            Peng, J.-L., &amp; Yeh, S.-L. (2025). Cognitive offloading in short-term memory tasks: Trust toward tools as a moderator. <em>International Journal of Human–Computer Interaction</em>.<br>
+            Risko, E. F., &amp; Gilbert, S. J. (2016). Cognitive offloading. <em>Trends in Cognitive Sciences</em>, 20(9), 676–688.<br>
+            Sparrow, B., Liu, J., &amp; Wegner, D. M. (2011). Google effects on memory: Cognitive consequences of having information at our fingertips. <em>Science</em>, 333(6043), 776–778.<br>
+            Morrison, A. B., &amp; Richmond, L. L. (2020). Offloading items from memory. <em>Cognitive Research: Principles and Implications</em>, 5(1).<br>
+            Barr, N., Pennycook, G., Stolz, J. A., &amp; Fugelsang, J. A. (2015). The brain in your pocket. <em>Computers in Human Behavior</em>, 48, 473–480.
+          </p>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -485,5 +530,31 @@
   </footer>
 
 </div>
+
+<script>
+  var blogPosts = document.querySelectorAll('#blog-section details.blog-post');
+
+  blogPosts.forEach(function (post) {
+    post.addEventListener('toggle', function () {
+      if (post.open) {
+        blogPosts.forEach(function (other) {
+          if (other !== post) other.open = false;
+        });
+      }
+    });
+  });
+
+  var blogSection = document.getElementById('blog-section');
+  if (blogSection && 'IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) {
+          blogPosts.forEach(function (post) { post.open = false; });
+        }
+      });
+    }, { threshold: 0 });
+    observer.observe(blogSection);
+  }
+</script>
 </body>
 </html>
