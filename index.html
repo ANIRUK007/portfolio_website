@@ -4,18 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anirudh Kotla</title>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
+
     :root {
-      --bg: #ffffff;
-      --surface: #f7f7f5;
-      --border: #e5e5e0;
-      --accent: #1a1a1a;
-      --link: #2563eb;
-      --muted: #6b6b6b;
-      --light-muted: #9ca3af;
-      --tag-bg: #f0f0ec;
-      --timeline-line: #d4d4cc;
+      --bg: #f2ead9;
+      --card: #fbf6ea;
+      --surface: #ece1c4;
+      --border: #ddd0ab;
+      --accent: #241f24;
+      --link: #2b4c7e;
+      --brick: #a53f2b;
+      --mustard: #a9791f;
+      --muted: #6b5f4a;
+      --light-muted: #9c8e6c;
+      --tag-bg: #ece1c4;
+      --timeline-line: #d9c8a0;
+      --titlebar-bg: #e9ddc2;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1a1f;
+        --card: #262029;
+        --surface: #2c2630;
+        --border: #3a3340;
+        --accent: #f2ead9;
+        --link: #8fb0da;
+        --brick: #e2795f;
+        --mustard: #e0ac4f;
+        --muted: #b8ab8e;
+        --light-muted: #847a5e;
+        --tag-bg: #332c2f;
+        --timeline-line: #443c48;
+        --titlebar-bg: #241f27;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,16 +47,79 @@
     body {
       background: var(--bg);
       color: var(--accent);
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 300;
-      font-size: 16px;
+      font-family: -apple-system, "Segoe UI", sans-serif;
+      font-weight: 400;
+      font-size: 15.5px;
       line-height: 1.75;
     }
 
     a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
     a:hover { opacity: 0.75; }
 
+    /* TITLEBAR */
+    .titlebar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      background: var(--titlebar-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .titlebar .dots { display: flex; gap: 8px; }
+    .titlebar .dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .titlebar .dot.red { background: #ff5f56; }
+    .titlebar .dot.yellow { background: #ffbd2e; }
+    .titlebar .dot.green { background: #27c93f; }
+    .titlebar .fname {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      color: var(--light-muted); letter-spacing: 0.03em;
+    }
+
     .container { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+
+    /* Section = catalog card */
+    .container > section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 26px 26px 30px;
+      box-shadow: 0 10px 22px -18px rgba(40, 26, 10, 0.4);
+      position: relative;
+    }
+    .container > section:nth-of-type(odd) { transform: rotate(-0.35deg); }
+    .container > section:nth-of-type(even) { transform: rotate(0.3deg); }
+
+    .fig {
+      position: absolute; top: 14px; right: 18px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px; color: var(--mustard);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    /* CONTRIBUTION GRID — replica of github.com/ANIRUK007's calendar, every active day linked */
+    .contrib-wrap { margin: 0 0 8px; }
+    .contrib-scroll { overflow-x: auto; padding-bottom: 4px; }
+    .contrib-months {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 12px; gap: 3px;
+      margin-bottom: 4px; padding-left: 1px;
+    }
+    .contrib-months span {
+      font-size: 9.5px; color: var(--light-muted); white-space: nowrap;
+    }
+    .contrib-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 12px; gap: 3px; }
+    .contrib-col { display: grid; grid-template-rows: repeat(7, 12px); gap: 3px; }
+    .cd {
+      width: 12px; height: 12px; border-radius: 2px;
+      background: var(--tag-bg); display: block;
+    }
+    .cd-empty { background: transparent; }
+    .cd-L0 { background: var(--tag-bg); }
+    .cd-L1 { background: #cddaeb; }
+    .cd-L2 { background: #8fabc9; }
+    .cd-L3 { background: #4f74a3; }
+    .cd-L4 { background: #2b4c7e; }
+    a.cd { transition: outline 0.1s ease, filter 0.1s ease; }
+    a.cd:hover, a.cd:focus-visible { filter: brightness(1.15); outline: 1px solid var(--accent); outline-offset: 1px; }
 
     /* HEADER */
     header {
@@ -46,28 +132,31 @@
     }
 
     .avatar {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      width: 108px; height: 108px;
+      border-radius: 3px;
+      background: var(--card);
+      border: 6px solid var(--card);
+      outline: 1px solid var(--border);
+      box-shadow: 0 8px 18px -8px rgba(40, 26, 10, 0.35);
+      transform: rotate(-2deg);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Lora', serif;
-      font-size: 40px; color: var(--muted);
-      margin-bottom: 6px;
+      color: var(--accent);
+      margin-bottom: 10px;
     }
 
     h1 {
-      font-family: 'Lora', serif;
-      font-size: clamp(32px, 5vw, 44px);
-      font-weight: 400;
-      letter-spacing: -0.5px;
-      line-height: 1.1;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-style: italic;
+      font-size: clamp(30px, 4.8vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
     }
 
     .tagline {
+      font-family: Georgia, serif;
       font-style: italic;
-      font-family: 'Lora', serif;
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--muted);
     }
 
@@ -78,24 +167,25 @@
 
     .social-links a {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px; color: var(--muted);
+      font-size: 12px; color: var(--link);
       text-decoration: none; letter-spacing: 0.02em;
     }
 
-    .social-links a:hover { color: var(--accent); }
+    .social-links a:hover { opacity: 0.7; }
 
     /* DIVIDER */
     hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
 
     /* SECTION TITLE */
     .section-title {
-      font-family: 'Lora', serif;
-      font-size: 28px; font-weight: 400;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-style: italic;
+      font-size: 24px; font-weight: 700;
       color: var(--accent); margin-bottom: 28px;
     }
 
     /* BIO */
-    .bio-text { font-size: 15px; color: #333; line-height: 1.85; }
+    .bio-text { font-size: 14.5px; color: var(--muted); line-height: 1.85; }
 
     /* TIMELINE */
     .timeline { display: flex; flex-direction: column; }
@@ -234,9 +324,9 @@
     .badge-chair {
       display: inline-block;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase;
-      background: var(--accent); color: white;
-      padding: 2px 7px; border-radius: 3px;
+      font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
+      background: var(--brick); color: #fdf6ea;
+      padding: 2px 8px; border-radius: 9px;
       margin-left: 8px; vertical-align: middle;
       position: relative; top: -1px;
     }
@@ -256,6 +346,10 @@
   </style>
 </head>
 <body>
+<div class="titlebar">
+  <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+  <span class="fname">card-catalog.zine</span>
+</div>
 <div class="container">
 
   <!-- HEADER -->
@@ -267,13 +361,554 @@
       <a href="https://github.com/ANIRUK007" target="_blank">github</a>
       <a href="https://www.linkedin.com/in/kotla-anirudh-a831a4245/" target="_blank">linkedin</a>
       <a href="mailto:kotlaanirudh05@gmail.com">email</a>
+      <a href="blog.html">blog</a>
     </div>
   </header>
+
+<div class="contrib-wrap">
+  <div class="contrib-scroll">
+    <div class="contrib-months">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Aug</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Sep</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Oct</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Nov</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Dec</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Jan</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Feb</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Mar</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Apr</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>May</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Jun</span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span>Jul</span>
+      <span></span>
+    </div>
+    <div class="contrib-grid">
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-13&to=2025-07-13" target="_blank" rel="noopener" title="36 contributions on Jul 13, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Jul 14, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-15&to=2025-07-15" target="_blank" rel="noopener" title="18 contributions on Jul 15, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-16&to=2025-07-16" target="_blank" rel="noopener" title="27 contributions on Jul 16, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Jul 17, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-18&to=2025-07-18" target="_blank" rel="noopener" title="27 contributions on Jul 18, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-19&to=2025-07-19" target="_blank" rel="noopener" title="27 contributions on Jul 19, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-20&to=2025-07-20" target="_blank" rel="noopener" title="36 contributions on Jul 20, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007/MEGPRO" target="_blank" rel="noopener" title="36 contributions on Jul 21, 2025 — ANIRUK007/MEGPRO"></a>
+        <span class="cd cd-L0" title="No contributions on Jul 22, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-23&to=2025-07-23" target="_blank" rel="noopener" title="9 contributions on Jul 23, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-24&to=2025-07-24" target="_blank" rel="noopener" title="9 contributions on Jul 24, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/Personal-Website" target="_blank" rel="noopener" title="27 contributions on Jul 25, 2025 — ANIRUK007/Personal-Website"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-26&to=2025-07-26" target="_blank" rel="noopener" title="18 contributions on Jul 26, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jul 27, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-07-28&to=2025-07-28" target="_blank" rel="noopener" title="36 contributions on Jul 28, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Jul 29, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 30, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/Chess_in_console" target="_blank" rel="noopener" title="28 contributions on Jul 31, 2025 — ANIRUK007/Chess_in_console"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/Chess_in_console" target="_blank" rel="noopener" title="26 contributions on Aug 1, 2025 — ANIRUK007/Chess_in_console"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-02&to=2025-08-02" target="_blank" rel="noopener" title="18 contributions on Aug 2, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-03&to=2025-08-03" target="_blank" rel="noopener" title="27 contributions on Aug 3, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-04&to=2025-08-04" target="_blank" rel="noopener" title="27 contributions on Aug 4, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 5, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-06&to=2025-08-06" target="_blank" rel="noopener" title="27 contributions on Aug 6, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-07&to=2025-08-07" target="_blank" rel="noopener" title="9 contributions on Aug 7, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 8, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007/portfolio_website" target="_blank" rel="noopener" title="36 contributions on Aug 9, 2025 — ANIRUK007/portfolio_website"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Aug 10, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-11&to=2025-08-11" target="_blank" rel="noopener" title="9 contributions on Aug 11, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 12, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Aug 13, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-14&to=2025-08-14" target="_blank" rel="noopener" title="27 contributions on Aug 14, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 15, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-16&to=2025-08-16" target="_blank" rel="noopener" title="9 contributions on Aug 16, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Aug 17, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-18&to=2025-08-18" target="_blank" rel="noopener" title="36 contributions on Aug 18, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 19, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-20&to=2025-08-20" target="_blank" rel="noopener" title="18 contributions on Aug 20, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-21&to=2025-08-21" target="_blank" rel="noopener" title="18 contributions on Aug 21, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-22&to=2025-08-22" target="_blank" rel="noopener" title="9 contributions on Aug 22, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 23, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-24&to=2025-08-24" target="_blank" rel="noopener" title="18 contributions on Aug 24, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-25&to=2025-08-25" target="_blank" rel="noopener" title="9 contributions on Aug 25, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 26, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Aug 27, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-28&to=2025-08-28" target="_blank" rel="noopener" title="18 contributions on Aug 28, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-29&to=2025-08-29" target="_blank" rel="noopener" title="18 contributions on Aug 29, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Aug 30, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-08-31&to=2025-08-31" target="_blank" rel="noopener" title="27 contributions on Aug 31, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-01&to=2025-09-01" target="_blank" rel="noopener" title="18 contributions on Sep 1, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 2, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-03&to=2025-09-03" target="_blank" rel="noopener" title="18 contributions on Sep 3, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-04&to=2025-09-04" target="_blank" rel="noopener" title="9 contributions on Sep 4, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-05&to=2025-09-05" target="_blank" rel="noopener" title="18 contributions on Sep 5, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-06&to=2025-09-06" target="_blank" rel="noopener" title="18 contributions on Sep 6, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-07&to=2025-09-07" target="_blank" rel="noopener" title="18 contributions on Sep 7, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 8, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-09&to=2025-09-09" target="_blank" rel="noopener" title="18 contributions on Sep 9, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 10, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-11&to=2025-09-11" target="_blank" rel="noopener" title="18 contributions on Sep 11, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 12, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-13&to=2025-09-13" target="_blank" rel="noopener" title="27 contributions on Sep 13, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Sep 14, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-15&to=2025-09-15" target="_blank" rel="noopener" title="18 contributions on Sep 15, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-16&to=2025-09-16" target="_blank" rel="noopener" title="36 contributions on Sep 16, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 17, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-18&to=2025-09-18" target="_blank" rel="noopener" title="36 contributions on Sep 18, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 19, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Sep 20, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Sep 21, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-22&to=2025-09-22" target="_blank" rel="noopener" title="27 contributions on Sep 22, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-23&to=2025-09-23" target="_blank" rel="noopener" title="36 contributions on Sep 23, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-24&to=2025-09-24" target="_blank" rel="noopener" title="27 contributions on Sep 24, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Sep 25, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Sep 26, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Sep 27, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-28&to=2025-09-28" target="_blank" rel="noopener" title="18 contributions on Sep 28, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007/ANIRUK007" target="_blank" rel="noopener" title="18 contributions on Sep 29, 2025 — ANIRUK007/ANIRUK007"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-09-30&to=2025-09-30" target="_blank" rel="noopener" title="9 contributions on Sep 30, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-01&to=2025-10-01" target="_blank" rel="noopener" title="27 contributions on Oct 1, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Oct 2, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Oct 3, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Oct 4, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-05&to=2025-10-05" target="_blank" rel="noopener" title="18 contributions on Oct 5, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Oct 6, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-07&to=2025-10-07" target="_blank" rel="noopener" title="36 contributions on Oct 7, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-08&to=2025-10-08" target="_blank" rel="noopener" title="1 contribution on Oct 8, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-09&to=2025-10-09" target="_blank" rel="noopener" title="17 contributions on Oct 9, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-10&to=2025-10-10" target="_blank" rel="noopener" title="18 contributions on Oct 10, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-11&to=2025-10-11" target="_blank" rel="noopener" title="27 contributions on Oct 11, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-12&to=2025-10-12" target="_blank" rel="noopener" title="27 contributions on Oct 12, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-13&to=2025-10-13" target="_blank" rel="noopener" title="9 contributions on Oct 13, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-14&to=2025-10-14" target="_blank" rel="noopener" title="9 contributions on Oct 14, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/Hacknovate-25" target="_blank" rel="noopener" title="27 contributions on Oct 15, 2025 — ANIRUK007/Hacknovate-25"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/Hacknovate-25" target="_blank" rel="noopener" title="27 contributions on Oct 16, 2025 — ANIRUK007/Hacknovate-25"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007/Hacknovate-25" target="_blank" rel="noopener" title="36 contributions on Oct 17, 2025 — ANIRUK007/Hacknovate-25"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/Hacknovate-25" target="_blank" rel="noopener" title="9 contributions on Oct 18, 2025 — ANIRUK007/Hacknovate-25"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-19&to=2025-10-19" target="_blank" rel="noopener" title="36 contributions on Oct 19, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-20&to=2025-10-20" target="_blank" rel="noopener" title="27 contributions on Oct 20, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-21&to=2025-10-21" target="_blank" rel="noopener" title="9 contributions on Oct 21, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-22&to=2025-10-22" target="_blank" rel="noopener" title="9 contributions on Oct 22, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Oct 23, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/EVP_final" target="_blank" rel="noopener" title="27 contributions on Oct 24, 2025 — ANIRUK007/EVP_final"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-25&to=2025-10-25" target="_blank" rel="noopener" title="18 contributions on Oct 25, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-26&to=2025-10-26" target="_blank" rel="noopener" title="36 contributions on Oct 26, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Oct 27, 2025"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-28&to=2025-10-28" target="_blank" rel="noopener" title="27 contributions on Oct 28, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Oct 29, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Oct 30, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-10-31&to=2025-10-31" target="_blank" rel="noopener" title="36 contributions on Oct 31, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-01&to=2025-11-01" target="_blank" rel="noopener" title="18 contributions on Nov 1, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Nov 2, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-03&to=2025-11-03" target="_blank" rel="noopener" title="18 contributions on Nov 3, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-04&to=2025-11-04" target="_blank" rel="noopener" title="27 contributions on Nov 4, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/ConvoMap-RAG_Ver1" target="_blank" rel="noopener" title="28 contributions on Nov 5, 2025 — ANIRUK007/ConvoMap-RAG_Ver1"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/ConvoMap-RAG_Ver1" target="_blank" rel="noopener" title="26 contributions on Nov 6, 2025 — ANIRUK007/ConvoMap-RAG_Ver1"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-07&to=2025-11-07" target="_blank" rel="noopener" title="18 contributions on Nov 7, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-08&to=2025-11-08" target="_blank" rel="noopener" title="18 contributions on Nov 8, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007/ConvoMap-RAG_Ver1" target="_blank" rel="noopener" title="36 contributions on Nov 9, 2025 — ANIRUK007/ConvoMap-RAG_Ver1"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-10&to=2025-11-10" target="_blank" rel="noopener" title="36 contributions on Nov 10, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-11&to=2025-11-11" target="_blank" rel="noopener" title="9 contributions on Nov 11, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-12&to=2025-11-12" target="_blank" rel="noopener" title="9 contributions on Nov 12, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-13&to=2025-11-13" target="_blank" rel="noopener" title="36 contributions on Nov 13, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Nov 14, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-15&to=2025-11-15" target="_blank" rel="noopener" title="9 contributions on Nov 15, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Nov 16, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-17&to=2025-11-17" target="_blank" rel="noopener" title="9 contributions on Nov 17, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Nov 18, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-19&to=2025-11-19" target="_blank" rel="noopener" title="18 contributions on Nov 19, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-20&to=2025-11-20" target="_blank" rel="noopener" title="27 contributions on Nov 20, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-21&to=2025-11-21" target="_blank" rel="noopener" title="9 contributions on Nov 21, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Nov 22, 2025"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-23&to=2025-11-23" target="_blank" rel="noopener" title="36 contributions on Nov 23, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Nov 24, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-25&to=2025-11-25" target="_blank" rel="noopener" title="36 contributions on Nov 25, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-26&to=2025-11-26" target="_blank" rel="noopener" title="27 contributions on Nov 26, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Nov 27, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007/ANIRUK007" target="_blank" rel="noopener" title="18 contributions on Nov 28, 2025 — ANIRUK007/ANIRUK007"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-11-29&to=2025-11-29" target="_blank" rel="noopener" title="18 contributions on Nov 29, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Nov 30, 2025"></span>
+        <span class="cd cd-L0" title="No contributions on Dec 1, 2025"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-02&to=2025-12-02" target="_blank" rel="noopener" title="10 contributions on Dec 2, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-03&to=2025-12-03" target="_blank" rel="noopener" title="26 contributions on Dec 3, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-04&to=2025-12-04" target="_blank" rel="noopener" title="9 contributions on Dec 4, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/Certificate-Automation-Script" target="_blank" rel="noopener" title="9 contributions on Dec 5, 2025 — ANIRUK007/Certificate-Automation-Script"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-06&to=2025-12-06" target="_blank" rel="noopener" title="9 contributions on Dec 6, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-07&to=2025-12-07" target="_blank" rel="noopener" title="36 contributions on Dec 7, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-08&to=2025-12-08" target="_blank" rel="noopener" title="9 contributions on Dec 8, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Dec 9, 2025"></span>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-10&to=2025-12-10" target="_blank" rel="noopener" title="36 contributions on Dec 10, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-11&to=2025-12-11" target="_blank" rel="noopener" title="36 contributions on Dec 11, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-12&to=2025-12-12" target="_blank" rel="noopener" title="9 contributions on Dec 12, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-13&to=2025-12-13" target="_blank" rel="noopener" title="27 contributions on Dec 13, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-14&to=2025-12-14" target="_blank" rel="noopener" title="9 contributions on Dec 14, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-15&to=2025-12-15" target="_blank" rel="noopener" title="27 contributions on Dec 15, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-16&to=2025-12-16" target="_blank" rel="noopener" title="9 contributions on Dec 16, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-17&to=2025-12-17" target="_blank" rel="noopener" title="18 contributions on Dec 17, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-18&to=2025-12-18" target="_blank" rel="noopener" title="36 contributions on Dec 18, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-19&to=2025-12-19" target="_blank" rel="noopener" title="18 contributions on Dec 19, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-20&to=2025-12-20" target="_blank" rel="noopener" title="9 contributions on Dec 20, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-21&to=2025-12-21" target="_blank" rel="noopener" title="36 contributions on Dec 21, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Dec 22, 2025"></span>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-23&to=2025-12-23" target="_blank" rel="noopener" title="18 contributions on Dec 23, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-24&to=2025-12-24" target="_blank" rel="noopener" title="9 contributions on Dec 24, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-25&to=2025-12-25" target="_blank" rel="noopener" title="9 contributions on Dec 25, 2025"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-26&to=2025-12-26" target="_blank" rel="noopener" title="27 contributions on Dec 26, 2025"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-27&to=2025-12-27" target="_blank" rel="noopener" title="9 contributions on Dec 27, 2025"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-28&to=2025-12-28" target="_blank" rel="noopener" title="27 contributions on Dec 28, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-29&to=2025-12-29" target="_blank" rel="noopener" title="18 contributions on Dec 29, 2025"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-30&to=2025-12-30" target="_blank" rel="noopener" title="36 contributions on Dec 30, 2025"></a>
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2025-12-31&to=2025-12-31" target="_blank" rel="noopener" title="18 contributions on Dec 31, 2025"></a>
+        <span class="cd cd-L0" title="No contributions on Jan 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 2, 2026"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/OmniChat" target="_blank" rel="noopener" title="27 contributions on Jan 3, 2026 — ANIRUK007/OmniChat"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L2" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-04&to=2026-01-04" target="_blank" rel="noopener" title="18 contributions on Jan 4, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Jan 5, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/portfolio_website" target="_blank" rel="noopener" title="9 contributions on Jan 6, 2026 — ANIRUK007/portfolio_website"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="11 contributions on Jan 7, 2026 — ANIRUK007/ASWQproj"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="31 contributions on Jan 8, 2026 — ANIRUK007/ASWQproj"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="9 contributions on Jan 9, 2026 — ANIRUK007/ASWQproj"></a>
+        <a class="cd cd-L4" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="46 contributions on Jan 10, 2026 — ANIRUK007/ASWQproj"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jan 11, 2026"></span>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/portfolio" target="_blank" rel="noopener" title="30 contributions on Jan 12, 2026 — ANIRUK007/portfolio"></a>
+        <a class="cd cd-L3" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="26 contributions on Jan 13, 2026 — ANIRUK007/ASWQproj"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-14&to=2026-01-14" target="_blank" rel="noopener" title="1 contribution on Jan 14, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Jan 15, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="9 contributions on Jan 16, 2026 — ANIRUK007/ASWQproj"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/ASWQproj" target="_blank" rel="noopener" title="3 contributions on Jan 17, 2026 — ANIRUK007/ASWQproj"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jan 18, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 19, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 20, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 21, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 22, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jan 23, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/ANIRUK007" target="_blank" rel="noopener" title="7 contributions on Jan 24, 2026 — ANIRUK007/ANIRUK007"></a>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-25&to=2026-01-25" target="_blank" rel="noopener" title="2 contributions on Jan 25, 2026"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-26&to=2026-01-26" target="_blank" rel="noopener" title="4 contributions on Jan 26, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Jan 27, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-28&to=2026-01-28" target="_blank" rel="noopener" title="3 contributions on Jan 28, 2026"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-29&to=2026-01-29" target="_blank" rel="noopener" title="2 contributions on Jan 29, 2026"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-01-30&to=2026-01-30" target="_blank" rel="noopener" title="2 contributions on Jan 30, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Jan 31, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Feb 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 2, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 4, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 5, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 6, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 7, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Feb 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 9, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 10, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 11, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 13, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-02-14&to=2026-02-14" target="_blank" rel="noopener" title="2 contributions on Feb 14, 2026"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Feb 15, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 16, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 17, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 18, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-02-19&to=2026-02-19" target="_blank" rel="noopener" title="3 contributions on Feb 19, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Feb 20, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 21, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Feb 22, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-02-23&to=2026-02-23" target="_blank" rel="noopener" title="1 contribution on Feb 23, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Feb 24, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Feb 25, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-02-26&to=2026-02-26" target="_blank" rel="noopener" title="2 contributions on Feb 26, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Feb 27, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-02-28&to=2026-02-28" target="_blank" rel="noopener" title="4 contributions on Feb 28, 2026"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Mar 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 2, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 4, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="3 contributions on Mar 5, 2026 — ANIRUK007/AMS_CO"></a>
+        <span class="cd cd-L0" title="No contributions on Mar 6, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 7, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Mar 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 9, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/RAGMODEL" target="_blank" rel="noopener" title="4 contributions on Mar 10, 2026 — ANIRUK007/RAGMODEL"></a>
+        <span class="cd cd-L0" title="No contributions on Mar 11, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 13, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 14, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="2 contributions on Mar 15, 2026 — ANIRUK007/AMS_CO"></a>
+        <span class="cd cd-L0" title="No contributions on Mar 16, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 17, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 18, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 19, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 20, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/portfolio_website" target="_blank" rel="noopener" title="4 contributions on Mar 21, 2026 — ANIRUK007/portfolio_website"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Mar 22, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 23, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 24, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 25, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/strucutured_rag" target="_blank" rel="noopener" title="2 contributions on Mar 26, 2026 — ANIRUK007/strucutured_rag"></a>
+        <span class="cd cd-L0" title="No contributions on Mar 27, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Mar 28, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="7 contributions on Mar 29, 2026 — ANIRUK007/AMS_CO"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="2 contributions on Mar 30, 2026 — ANIRUK007/AMS_CO"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="4 contributions on Mar 31, 2026 — ANIRUK007/AMS_CO"></a>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/AMS_CO" target="_blank" rel="noopener" title="1 contribution on Apr 1, 2026 — ANIRUK007/AMS_CO"></a>
+        <span class="cd cd-L0" title="No contributions on Apr 2, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 4, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Apr 5, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 6, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 7, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 9, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 10, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 11, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Apr 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 13, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 14, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/MCP_server" target="_blank" rel="noopener" title="9 contributions on Apr 15, 2026 — ANIRUK007/MCP_server"></a>
+        <span class="cd cd-L0" title="No contributions on Apr 16, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 17, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 18, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Apr 19, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 20, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 21, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-04-22&to=2026-04-22" target="_blank" rel="noopener" title="1 contribution on Apr 22, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Apr 23, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 24, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 25, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Apr 26, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 27, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-04-28&to=2026-04-28" target="_blank" rel="noopener" title="1 contribution on Apr 28, 2026"></a>
+        <span class="cd cd-L0" title="No contributions on Apr 29, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Apr 30, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 2, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on May 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 4, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 5, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 6, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 7, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 9, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on May 10, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 11, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 13, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 14, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 15, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-05-16&to=2026-05-16" target="_blank" rel="noopener" title="1 contribution on May 16, 2026"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on May 17, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 18, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 19, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 20, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 21, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 22, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 23, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on May 24, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 25, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 26, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 27, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 28, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 29, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on May 30, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on May 31, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 2, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 4, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 5, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 6, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jun 7, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 9, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 10, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 11, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 13, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jun 14, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 15, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 16, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 17, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 18, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 19, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007?tab=overview&from=2026-06-20&to=2026-06-20" target="_blank" rel="noopener" title="2 contributions on Jun 20, 2026"></a>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jun 21, 2026"></span>
+        <a class="cd cd-L1" href="https://github.com/ANIRUK007/NeuroBrain" target="_blank" rel="noopener" title="1 contribution on Jun 22, 2026 — ANIRUK007/NeuroBrain"></a>
+        <span class="cd cd-L0" title="No contributions on Jun 23, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 24, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 25, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 26, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 27, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jun 28, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 29, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jun 30, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 1, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 2, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 3, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 4, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jul 5, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 6, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 7, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 8, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 9, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 10, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 11, 2026"></span>
+      </div>
+      <div class="contrib-col">
+        <span class="cd cd-L0" title="No contributions on Jul 12, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 13, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 14, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 15, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 16, 2026"></span>
+        <span class="cd cd-L0" title="No contributions on Jul 17, 2026"></span>
+        <span class="cd cd-empty"></span>
+      </div>
+    </div>
+  </div>
+</div>
 
   <hr>
 
   <!-- BIO -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 001 — profile</div>
     <div class="section-title">bio</div>
     <p class="bio-text">
       I am a Computer Science Engineering student from Hyderabad, interested in Large Language Models, multi-agent systems, and explainable AI. I am a part of Nexus Research Lab at Methodist College and have interned at IIT Tirupati on terrain-mapping drone systems for disaster management. I spend most of my time building AI applications, tracking advancements in AI scene and waiting for AGI on <a href="https://github.com/ANIRUK007" target="_blank">GitHub</a> or <a href="https://www.linkedin.com/in/kotla-anirudh-a831a4245/" target="_blank">LinkedIn</a>.
@@ -282,6 +917,7 @@
 
   <!-- EXPERIENCE -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 002 — experience</div>
     <div class="section-title">experience</div>
     <div class="timeline">
 
@@ -320,6 +956,7 @@
 
   <!-- PET PROJECTS -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 003 — pet projects</div>
     <div class="section-title">pet projects</div>
 
     <div class="pet-project">
@@ -354,56 +991,10 @@
 
   </section>
 
-  <!-- BLOG -->
-  <section id="blog-section" style="margin-bottom: 52px;">
-    <div class="section-title">blog</div>
-    <div class="blog-list">
-      <details class="blog-post">
-        <summary class="blog-item">
-          <span class="blog-date">2026 · 07</span>
-          <span class="blog-title-text" style="font-style: normal; color: var(--accent);">The Era of Ternary Computing</span>
-        </summary>
-        <div class="blog-post-body">
-          <p>The landscape of AI, dominated by Transformer based models like OpenAI's GPT series and Google's Gemma, has redefined expectations for machine reasoning. However, a significant barrier persists: the sheer computational cost and memory footprint of these State of the Art (SOTA) models. Running a 7B parameter model typically requires a high end GPU with substantial VRAM, as weights are traditionally stored in FP16 (16 bit) format.</p>
-          <p>This memory bottleneck has led to a paradigm shift. While distillation and standard quantization (like 4 bit or 8 bit) offer some relief, they often trade off too much reasoning capability or still require expensive hardware. To address this, research into BitNet has introduced a "ternary" approach that fundamentally re-invents weight representation, focusing specifically on the 1.58 bit standard.</p>
-          <p><strong>The 1.58 bit Innovation: Beyond Binary</strong><br>
-          The core innovation of BitNet b1.58 is the transition from high precision floating points to a ternary system. Unlike the original 1 bit models that used only 1 and -1, the 1.58 bit model introduces a third state: 0. This addition of "zero" is transformative for two reasons:</p>
-          <p>• <strong>Model Sparsity:</strong> It allows the model to effectively "turn off" specific connections between neurons, improving performance while maintaining a tiny footprint.<br>
-          • <strong>Computational Efficiency:</strong> By using the values {-1, 0, 1}, the model replaces complex floating point matrix multiplications with simple integer additions and subtractions. This reduces energy consumption by approximately 12 to 20 times compared to standard models.</p>
-          <p><strong>Performance and Scaling Laws</strong><br>
-          The efficiency of 1.58 bit models is not just theoretical; it scales more effectively than traditional architectures. When comparing BitNet b1.58 to a standard Llama architecture: at 3B parameters, BitNet matches or even outperforms full precision models across various benchmarks. At 70B parameters, the memory savings become even more dramatic — a 70B BitNet model requires over 7 times less memory than a standard Llama 70B. Generation speeds are significantly higher too, with reports of 1.58 bit models being nearly 3 times faster at the 3B scale.</p>
-          <p><strong>Sustainable and Local AI</strong><br>
-          For those looking to build open source tools or research AI locally, the implications are profound. A 70B parameter 1.58 bit model can actually be more efficient in terms of memory usage and energy consumption than a standard 13B parameter model in full precision. Recent models trained on trillions of tokens demonstrate that these architectures can be trained at a fraction of the cost — roughly $1,300 for a 2B parameter run compared to an estimated $26,000 for standard precision. This paves the way for a future where high reasoning AI isn't confined to massive data centers but is accessible on consumer grade hardware, enabling a new era of sustainable and accessible AI development.</p>
-        </div>
-      </details>
-
-      <details class="blog-post">
-        <summary class="blog-item">
-          <span class="blog-date">2026 · 07</span>
-          <span class="blog-title-text" style="font-style: normal; color: var(--accent);">Cognitive Offloading in the Age of Generative AI</span>
-        </summary>
-        <div class="blog-post-body">
-          <p>Human beings have long been distinguished not by physical strength, but by cognition: the capacity to remember, imagine, reason, and transform experience into knowledge. Through cognition, humans developed language, mathematics, science, and technology. Ironically, these very achievements have now produced tools capable of performing many cognitive tasks for us. Generative artificial intelligence systems such as ChatGPT, Claude, and Gemini can write essays, summarize articles, generate code, and plan activities. As these tools move into everyday life, a central question emerges: are they extending the human mind, or gradually displacing it?</p>
-          <p>At the heart of this question lies the concept of cognitive offloading — the use of external resources to reduce the mental effort required to perform a task. Writing a shopping list instead of memorizing it, using a calculator rather than performing mental arithmetic, or relying on GPS instead of forming spatial maps are all examples of offloading. These practices are not new. What is new is that generative AI does not merely store or retrieve information — it actively produces language, structure, and apparent reasoning.</p>
-          <p>Recent researchers investigating short-term memory have shown that cognitive offloading significantly improves immediate task performance, especially as tasks become more demanding. In controlled experiments, participants performed far better when tools were available, particularly when the amount of information exceeded normal working-memory limits. Crucially, the researchers also identified a psychological moderator: trust toward tools. Participants who trusted a tool more were more likely to rely on it and gained greater performance benefits. Unlike notebooks or calculators, GenAI systems present themselves conversationally, fluently, and confidently — a human-like interaction style that can rapidly cultivate trust, and with it, a greater likelihood of offloading not only memory, but composition, planning, and problem-solving to machines.</p>
-          <p>Such delegation represents a deeper transfer of cognitive function. Historically, tools externalized memory and computation. Generative AI externalizes parts of thinking itself. Drafting essays, generating ideas, or summarizing arguments were once exercises through which students clarified and consolidated understanding. When these steps are bypassed, the human role subtly shifts from thinker to editor, from constructor of meaning to consumer of output.</p>
-          <p>Understanding how GenAI operates clarifies both its power and its limits. These systems are trained on massive datasets and learn statistical relationships between elements of language. When a user enters a prompt, the model predicts which sequences of words are most likely to follow. It does not possess awareness, intention, or understanding — it does not know whether a statement is true, only whether it is linguistically probable. This design allows remarkable fluency, but it also explains why generative models can confidently produce false information, fabricated references, or logically inconsistent explanations. Here again, trust becomes pivotal: misplaced trust can lead users to accept incorrect outputs without verification, and the system's polished language may mask its lack of grounding, increasing the risk of automation bias, where human judgment is overridden by machine output.</p>
-          <p>The broader concern is not simply that AI makes mistakes, but that sustained reliance may reshape cognitive habits. Cognitive effort is not only a cost — it is also the mechanism through which skills develop. Memory strengthens through retrieval, reasoning improves through struggle, and understanding deepens through construction. When generative systems perform these operations externally, the brain may engage less frequently in the very processes that sustain cognitive capacity. This shift can be described as a form of brain dislocation: the relocation of mental work from internal neural activity to external computational systems. Cognitive offloading boosts immediate performance, yet extensive cognitive science literature shows it can impair later independent recall — suggesting a future in which people perform tasks faster, yet potentially with reduced internalization of knowledge.</p>
-          <p>None of this implies that generative tools should be rejected. On the contrary, cognitive offloading has always been a driver of human progress — writing enabled civilization, and calculators enabled modern science. The issue is not whether we offload cognition, but which parts, how often, and with what awareness. Tool use is not merely technical; it is psychological. Trust shapes reliance, and reliance reshapes cognition. In the age of generative AI, the challenge is to cultivate a relationship with technology that preserves active thinking. When AI is used to support reflection rather than replace it, to challenge reasoning rather than shortcut it, it can serve as a genuine cognitive partner. If used uncritically, however, it risks becoming a silent architect of cognitive decline. The future of intelligence may not be defined by what machines can do, but by what humans choose to continue doing for themselves.</p>
-          <p class="blog-refs">
-            Peng, J.-L., &amp; Yeh, S.-L. (2025). Cognitive offloading in short-term memory tasks: Trust toward tools as a moderator. <em>International Journal of Human–Computer Interaction</em>.<br>
-            Risko, E. F., &amp; Gilbert, S. J. (2016). Cognitive offloading. <em>Trends in Cognitive Sciences</em>, 20(9), 676–688.<br>
-            Sparrow, B., Liu, J., &amp; Wegner, D. M. (2011). Google effects on memory: Cognitive consequences of having information at our fingertips. <em>Science</em>, 333(6043), 776–778.<br>
-            Morrison, A. B., &amp; Richmond, L. L. (2020). Offloading items from memory. <em>Cognitive Research: Principles and Implications</em>, 5(1).<br>
-            Barr, N., Pennycook, G., Stolz, J. A., &amp; Fugelsang, J. A. (2015). The brain in your pocket. <em>Computers in Human Behavior</em>, 48, 473–480.
-          </p>
-        </div>
-      </details>
-    </div>
-  </section>
 
   <!-- TECHNICAL SKILLS -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 004 — technical skills</div>
     <div class="section-title">technical skills</div>
 
     <div class="skills-block">
@@ -430,6 +1021,7 @@
 
   <!-- RESEARCH -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 005 — research</div>
     <div class="section-title">research</div>
 
     <div class="timeline">
@@ -479,6 +1071,7 @@
 
   <!-- RESEARCH INTERESTS -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 006 — research interests</div>
     <div class="section-title">research interests</div>
     <div class="interests">
       <span>Explainable AI</span>
@@ -490,18 +1083,20 @@
 
   <!-- CLUB & PROFESSIONAL AFFILIATIONS -->
   <section style="margin-bottom: 52px;">
+    <div class="fig">Rec. 007 — affiliations</div>
     <div class="section-title">club &amp; professional affiliations</div>
 
     <div class="affil-item">
-      <div class="affil-year">2024 –<br>2026</div>
+      <div class="affil-year">2024 –<br>Present</div>
       <div class="affil-divider"></div>
       <div>
         <div class="affil-org">
           Institute of Electrical and Electronics Engineers (IEEE)
-          <span class="badge-chair">Chair</span>
+          <span class="badge-chair">Mentor</span>
         </div>
         <div class="affil-role-text">
-          Chair, MCET Student Branch — Feb 2025 – Present<br>
+          Student Branch Mentor, MCET Student Branch — Feb 2026 – Present<br>
+          Chair, MCET Student Branch — Feb 2025 – Feb 2026<br>
           Vice-Secretary, MCET Student Branch — Jun 2024 – Feb 2025
         </div>
       </div>
@@ -531,30 +1126,5 @@
 
 </div>
 
-<script>
-  var blogPosts = document.querySelectorAll('#blog-section details.blog-post');
-
-  blogPosts.forEach(function (post) {
-    post.addEventListener('toggle', function () {
-      if (post.open) {
-        blogPosts.forEach(function (other) {
-          if (other !== post) other.open = false;
-        });
-      }
-    });
-  });
-
-  var blogSection = document.getElementById('blog-section');
-  if (blogSection && 'IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) {
-          blogPosts.forEach(function (post) { post.open = false; });
-        }
-      });
-    }, { threshold: 0 });
-    observer.observe(blogSection);
-  }
-</script>
 </body>
 </html>
